@@ -30,11 +30,7 @@
             background: white;
             margin-top: 10px;
             cursor: crosshair;
-        }
-
-        button, input {
-            padding: 5px 10px;
-            cursor: pointer;
+            touch-action: none;
         }
 
         .anime {
@@ -57,8 +53,9 @@
 <div class="anime">😊</div>
 
 <div class="toolbar">
-    🎨 Color: <input type="color" id="colorPicker" value="#4CAF50">
-    🖌 Brush Size: <input type="range" id="brushSize" min="1" max="20" value="5">
+    🎨 <input type="color" id="colorPicker" value="#4CAF50">
+    🖌 <input type="range" id="brushSize" min="1" max="30" value="5">
+    <button onclick="setBrush()">Brush</button>
     <button onclick="setEraser()">Eraser</button>
     <button onclick="clearCanvas()">Clear</button>
     <button onclick="downloadImage()">Download</button>
@@ -76,43 +73,13 @@ let erasing = false;
 const colorPicker = document.getElementById("colorPicker");
 const brushSize = document.getElementById("brushSize");
 
-function startPosition(e) {
-    painting = true;
-    draw(e);
-}
-
-function endPosition() {
-    painting = false;
-    ctx.beginPath();
-}
-
-function draw(e) {
-    if (!painting) return;
-
-    ctx.lineWidth = brushSize.value;
-    ctx.lineCap = "round";
-
-    if (erasing) {
-        ctx.strokeStyle = "white";
-    } else {
-        ctx.strokeStyle = colorPicker.value;
-    }
-
+function getPosition(e) {
     const rect = canvas.getBoundingClientRect();
-    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-}
-
-canvas.addEventListener("mousedown", startPosition);
-canvas.addEventListener("mouseup", endPosition);
-canvas.addEventListener("mousemove", draw);
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function downloadImage() {
-    const link = document.createElement("a");
-    link.downl
+    if (e.touches) {
+        return {
+            x: e.touches[0].clientX - rect.left,
+            y: e.touches[0].clientY - rect.top
+        };
+    }
+    return {
+        x: e.c
