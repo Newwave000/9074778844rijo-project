@@ -1,85 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Depression Relax - Paint</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: linear-gradient(135deg, #c3f0ca, #f6fbc3);
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<title>Depression Relax - Paint</title>
 
-        h1 {
-            padding: 15px;
-            color: #2e7d32;
-        }
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(135deg,#c3f0ca,#f6fbc3);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
 
-        .toolbar {
-            background: white;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+h1 {
+    margin: 15px;
+    color: #2e7d32;
+}
 
-        canvas {
-            border: 2px solid #333;
-            background: white;
-            margin-top: 10px;
-            cursor: crosshair;
-            touch-action: none;
-        }
+.toolbar {
+    background: white;
+    padding: 10px;
+}
 
-        .anime {
-            position: fixed;
-            font-size: 50px;
-            top: 20%;
-            left: -100px;
-            animation: move 15s linear infinite;
-        }
-
-        @keyframes move {
-            0% { left: -100px; }
-            100% { left: 110%; }
-        }
-    </style>
+canvas {
+    border: 2px solid black;
+    background: white;
+    display: block;
+    margin: 10px auto;
+    cursor: crosshair;
+}
+</style>
 </head>
+
 <body>
 
 <h1>Depression Relax 🎨</h1>
-<div class="anime">😊</div>
 
 <div class="toolbar">
-    🎨 <input type="color" id="colorPicker" value="#4CAF50">
-    🖌 <input type="range" id="brushSize" min="1" max="30" value="5">
-    <button onclick="setBrush()">Brush</button>
-    <button onclick="setEraser()">Eraser</button>
+    Color <input type="color" id="color" value="#4CAF50">
+    Size <input type="range" id="size" min="1" max="30" value="5">
     <button onclick="clearCanvas()">Clear</button>
-    <button onclick="downloadImage()">Download</button>
 </div>
 
-<canvas id="canvas" width="1000" height="500"></canvas>
+<canvas id="canvas"></canvas>
 
 <script>
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let painting = false;
-let erasing = false;
+// Set real canvas size
+canvas.width = 1000;
+canvas.height = 500;
 
-const colorPicker = document.getElementById("colorPicker");
-const brushSize = document.getElementById("brushSize");
+let drawing = false;
 
-function getPosition(e) {
-    const rect = canvas.getBoundingClientRect();
-    if (e.touches) {
-        return {
-            x: e.touches[0].clientX - rect.left,
-            y: e.touches[0].clientY - rect.top
-        };
-    }
-    return {
-        x: e.c
+canvas.addEventListener("mousedown", function(e){
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+});
+
+canvas.addEventListener("mousemove", function(e){
+    if(!drawing) return;
+
+    ctx.lineWidth = document.getElementById("size").value;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = document.getElementById("color").value;
+
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+});
+
+canvas.addEventListener("mouseup", function(){
+    drawing = false;
+});
+
+canvas.addEventListener("mouseleave", function(){
+    drawing = false;
+});
+
+function clearCanvas(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+</script>
+
+</body>
+</html>
