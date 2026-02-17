@@ -1,49 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Color Filler</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: white;
-      font-family: Arial, sans-serif;
-    }
-    canvas {
-      border: 1px solid #000;
-      cursor: crosshair;
-      margin-top: 20px;
-    }
-  </style>
+    <title>Depression Relax</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+            overflow-x: hidden;
+        }
+
+        /* Banner */
+        .banner {
+            text-align: center;
+            font-size: 45px;
+            font-weight: bold;
+            padding: 20px;
+            color: #2e7d32;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #2e7d32; }
+            to { text-shadow: 0 0 25px #00ff99; }
+        }
+
+        /* Floating Cartoon */
+        .anime {
+            position: fixed;
+            font-size: 60px;
+            top: 30%;
+            left: -100px;
+            animation: move 12s linear infinite;
+            z-index: 999;
+        }
+
+        @keyframes move {
+            0% { left: -100px; }
+            100% { left: 110%; }
+        }
+
+        /* Game container (your old dashboard) */
+        .container {
+            width: 90%;
+            height: 500px;
+            margin: auto;
+            border: 2px solid black;
+            background: white;
+        }
+
+    </style>
 </head>
 <body>
-  <h1>Color Filler</h1>
-  <input type="color" id="colorPicker" value="#ff0000">
-  <canvas id="canvas" width="800" height="600"></canvas>
 
-  <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const colorPicker = document.getElementById('colorPicker');
+    <div class="banner">Depression Relax 🌿</div>
 
-    let drawing = false;
+    <div class="anime">😊</div>
 
-    canvas.addEventListener('mousedown', () => drawing = true);
-    canvas.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('mouseleave', () => drawing = false);
+    <!-- Your Existing Dashboard Area -->
+    <div class="container">
+        <!-- Your Color Filler Game Code Here -->
+    </div>
 
-    canvas.addEventListener('mousemove', (e) => {
-      if (!drawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.fillStyle = colorPicker.value;
-      ctx.fillRect(x - 5, y - 5, 10, 10);
-    });
-  </script>
 </body>
 </html>
