@@ -6,33 +6,49 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+            background: linear-gradient(135deg, #c3f0ca, #f6fbc3);
+            text-align: center;
             overflow-x: hidden;
         }
 
-        /* Banner */
-        .banner {
-            text-align: center;
-            font-size: 45px;
-            font-weight: bold;
+        h1 {
+            font-size: 40px;
             padding: 20px;
             color: #2e7d32;
-            animation: glow 2s infinite alternate;
         }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #2e7d32; }
-            to { text-shadow: 0 0 25px #00ff99; }
+        /* Drawing Canvas */
+        canvas {
+            border: 2px solid #333;
+            background: white;
+            cursor: crosshair;
         }
 
-        /* Floating Cartoon */
+        /* Buttons */
+        .controls {
+            margin: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .clear { background: #ff5252; color: white; }
+        .download { background: #2196f3; color: white; }
+        .cut { background: #9c27b0; color: white; }
+
+        /* Floating Smile */
         .anime {
             position: fixed;
-            font-size: 60px;
-            top: 30%;
+            font-size: 50px;
+            top: 20%;
             left: -100px;
-            animation: move 12s linear infinite;
-            z-index: 999;
+            animation: move 15s linear infinite;
         }
 
         @keyframes move {
@@ -40,27 +56,36 @@
             100% { left: 110%; }
         }
 
-        /* Game container (your old dashboard) */
-        .container {
-            width: 90%;
-            height: 500px;
-            margin: auto;
-            border: 2px solid black;
-            background: white;
-        }
-
     </style>
 </head>
 <body>
 
-    <div class="banner">Depression Relax 🌿</div>
-
+    <h1>Depression Relax 🌿</h1>
     <div class="anime">😊</div>
 
-    <!-- Your Existing Dashboard Area -->
-    <div class="container">
-        <!-- Your Color Filler Game Code Here -->
+    <div class="controls">
+        <button class="clear" onclick="clearCanvas()">Clear</button>
+        <button class="download" onclick="downloadImage()">Download</button>
+        <button class="cut" onclick="cutPaper()">Cut Paper Effect</button>
     </div>
 
-</body>
-</html>
+    <canvas id="canvas" width="900" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let painting = false;
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (
